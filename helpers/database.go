@@ -1,9 +1,9 @@
 package helpers
 
 import (
+	"ecommerce-ums/internal/models"
 	"fmt"
 	"log"
-	"my-echo-framework/internal/models"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"

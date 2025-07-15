@@ -1,4 +1,4 @@
-module my-echo-framework
+module ecommerce-ums
 
 go 1.23.6
 

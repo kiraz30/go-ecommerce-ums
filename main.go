@@ -1,8 +1,8 @@
 package main
 
 import (
-	"my-echo-framework/cmd"
-	"my-echo-framework/helpers"
+	"ecommerce-ums/cmd"
+	"ecommerce-ums/helpers"
 )
 
 func main() {

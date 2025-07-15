@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"ecommerce-ums/helpers"
 	"fmt"
-	"my-echo-framework/helpers"
 	"strings"
 
 	"github.com/IBM/sarama"

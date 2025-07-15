@@ -16,7 +16,7 @@ type User struct {
 	// date of birth
 	Dob       string    `json:"dob" gorm:"column:dob;type:date"`
 	Password  string    `json:"password,omitempty" gorm:"column:password;type:varchar(255)" validate:"required" `
-	Role      string    `json:"role,omitempty" gorm:"column:role;type:varchar(10)" validate:"required" `
+	Role      string    `json:"role,omitempty" gorm:"column:role;type:varchar(10)"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }
