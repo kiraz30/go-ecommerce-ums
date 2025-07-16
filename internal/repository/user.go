@@ -79,3 +79,7 @@ func (r *UserRepository) GetUserRefreshToken(ctx context.Context, refreshToken s
 func (r *UserRepository) UpdateRefreshToken(ctx context.Context, token, refreshToken string) error {
 	return r.DB.Exec("Update user_session SET token = ? where refresh_token = ?", token, refreshToken).Error
 }
+
+func (r *UserRepository) DeleteUserSession(ctx context.Context, token string) error {
+	return r.DB.Exec("DELETE FROM user_session WHERE token = ?", token).Error
+}

@@ -141,3 +141,18 @@ func (api *UserAPI) GetProfile(e echo.Context) error {
 	}
 	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, resp)
 }
+
+func (api *UserAPI) Logout(e echo.Context) error {
+	var (
+		log = helpers.Logger
+	)
+	token := e.Request().Header.Get("Authorization")
+	err := api.UserService.Logout(e.Request().Context(), token)
+	if err != nil {
+		log.Info("Failded on logout service:", err)
+		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
+
+	}
+
+	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, nil)
+}
