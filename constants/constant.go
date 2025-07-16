@@ -5,3 +5,8 @@ const (
 	ErrServerError      = "terjadi kesalahan pada server"
 	SuccessMessage      = "success"
 )
+
+const (
+	RoleAdmin    = "admin"
+	RoleCustomer = "customer"
+)

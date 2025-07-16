@@ -9,14 +9,18 @@ import (
 
 type IUserRepository interface {
 	InsertNewUser(ctx context.Context, User *models.User) error
+	GetUserByUserName(ctx context.Context, username, role string) (models.User, error)
+	InsertNewUserSession(ctx context.Context, session *models.UserSession) error
 }
 
 type IUserService interface {
-	RegisterUser(ctx context.Context, request *models.User) (*models.User, error)
-	RegisterAdmin(ctx context.Context, request *models.User) (*models.User, error)
+	RegisterUser(ctx context.Context, request *models.User, role string) (*models.User, error)
+	Login(ctx context.Context, request models.LoginRequest, role string) (models.LoginReponse, error)
 }
 
 type IUserHandler interface {
 	RegisterUserHandler(e echo.Context) error
 	RegisterAdminHandler(e echo.Context) error
+	Login(e echo.Context) error
+	LoginAdmin(e echo.Context) error
 }

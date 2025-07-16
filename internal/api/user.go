@@ -32,7 +32,7 @@ func (api *UserAPI) RegisterUserHandler(e echo.Context) error {
 		log.Info("Error validate user register request: ", err)
 		return helpers.SendResponseHTTP(e, http.StatusBadRequest, constants.ErrFailedBadRequest, nil)
 	}
-	response, err := api.UserService.RegisterUser(e.Request().Context(), &request)
+	response, err := api.UserService.RegisterUser(e.Request().Context(), &request, constants.RoleCustomer)
 	if err != nil {
 		log.Info("Failed to register user :", err)
 		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
@@ -58,10 +58,68 @@ func (api *UserAPI) RegisterAdminHandler(e echo.Context) error {
 		log.Info("Error validate user register request: ", err)
 		return helpers.SendResponseHTTP(e, http.StatusBadRequest, constants.ErrFailedBadRequest, nil)
 	}
-	response, err := api.UserService.RegisterAdmin(e.Request().Context(), &request)
+	response, err := api.UserService.RegisterUser(e.Request().Context(), &request, constants.RoleAdmin)
 	if err != nil {
 		log.Info("Failed to register user :", err)
 		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
 	}
 	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, response)
+}
+
+func (api *UserAPI) Login(e echo.Context) error {
+	var (
+		log = helpers.Logger
+	)
+	request := models.LoginRequest{}
+	resp := models.LoginReponse{}
+
+	if err := e.Bind(&request); err != nil {
+		log.Info("Failded to parse requst:", err)
+		helpers.SendResponseHTTP(e, http.StatusBadRequest, constants.ErrFailedBadRequest, nil)
+
+	}
+	if err := request.Validate(); err != nil {
+		log.Info("Failded to validate:", err)
+		return helpers.SendResponseHTTP(e, http.StatusBadRequest, constants.ErrFailedBadRequest, nil)
+
+	}
+
+	resp, err := api.UserService.Login(e.Request().Context(), request, constants.RoleCustomer)
+	if err != nil {
+		log.Info("Failded on login service:", err)
+		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
+
+	}
+
+	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, resp)
+
+}
+
+func (api *UserAPI) LoginAdmin(e echo.Context) error {
+	var (
+		log = helpers.Logger
+	)
+	request := models.LoginRequest{}
+	resp := models.LoginReponse{}
+
+	if err := e.Bind(&request); err != nil {
+		log.Info("Failded to parse requst:", err)
+		helpers.SendResponseHTTP(e, http.StatusBadRequest, constants.ErrFailedBadRequest, nil)
+
+	}
+	if err := request.Validate(); err != nil {
+		log.Info("Failded to validate:", err)
+		return helpers.SendResponseHTTP(e, http.StatusBadRequest, constants.ErrFailedBadRequest, nil)
+
+	}
+
+	resp, err := api.UserService.Login(e.Request().Context(), request, constants.RoleAdmin)
+	if err != nil {
+		log.Info("Failded on login service:", err)
+		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
+
+	}
+
+	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, resp)
+
 }

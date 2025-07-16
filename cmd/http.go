@@ -21,6 +21,8 @@ func ServeHTTP() {
 	userV1 := e.Group("/user/v1")
 	userV1.POST("/register", dependency.UserAPI.RegisterUserHandler)
 	userV1.POST("/register/admin", dependency.UserAPI.RegisterAdminHandler)
+	userV1.POST("/login", dependency.UserAPI.Login)
+	userV1.POST("/login/admin", dependency.UserAPI.LoginAdmin)
 
 	e.Start(":" + helpers.GetEnv("PORT", "9000"))
 }
