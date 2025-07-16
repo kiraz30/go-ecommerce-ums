@@ -80,3 +80,15 @@ func (s *UserService) Login(ctx context.Context, request models.LoginRequest, ro
 
 	return response, nil
 }
+
+func (s *UserService) GetProfile(ctx context.Context, username string) (models.User, error) {
+
+	var response models.User
+	response, err := s.UserRepository.GetUserByUserName(ctx, username, "")
+	if err != nil {
+		return response, errors.Wrap(err, "failed to get user by username")
+	}
+	response.Password = ""
+	response.Role = ""
+	return response, nil
+}

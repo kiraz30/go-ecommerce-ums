@@ -22,7 +22,13 @@ func (r *UserRepository) GetUserByUserName(ctx context.Context, username, role s
 		err  error
 	)
 
-	err = r.DB.Where("username = ?", username).Where("role = ?", role).First(&user).Error
+	sql := r.DB.Where("username = ?", username)
+
+	if role != "" {
+		sql = sql.Where("role = ?", role)
+	}
+
+	err = sql.First(&user).Error
 	if err != nil {
 		return user, err
 	}
@@ -36,4 +42,21 @@ func (r *UserRepository) GetUserByUserName(ctx context.Context, username, role s
 
 func (r *UserRepository) InsertNewUserSession(ctx context.Context, session *models.UserSession) error {
 	return r.DB.Create(session).Error
+}
+
+func (r *UserRepository) GetUserSessionToken(ctx context.Context, token string) (models.UserSession, error) {
+	var (
+		dataUserSession models.UserSession
+		err             error
+	)
+
+	err = r.DB.Where("token = ?", token).First(&dataUserSession).Error
+	if err != nil {
+		return dataUserSession, err
+	}
+	if dataUserSession.ID == 0 {
+		return dataUserSession, errors.New("user session not found")
+	}
+
+	return dataUserSession, nil
 }

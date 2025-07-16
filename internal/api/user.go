@@ -119,7 +119,25 @@ func (api *UserAPI) LoginAdmin(e echo.Context) error {
 		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
 
 	}
-
 	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, resp)
+}
 
+func (api *UserAPI) GetProfile(e echo.Context) error {
+	var (
+		log = helpers.Logger
+	)
+
+	token := e.Get("token")
+	tokenClaim, ok := token.(*helpers.ClaimToken)
+	if !ok {
+		log.Info("Failded get token data")
+		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
+	}
+	resp, err := api.UserService.GetProfile(e.Request().Context(), tokenClaim.Username)
+	if err != nil {
+		log.Info("Failded to get Profile:", err)
+		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
+
+	}
+	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, resp)
 }

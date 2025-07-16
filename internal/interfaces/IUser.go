@@ -11,11 +11,13 @@ type IUserRepository interface {
 	InsertNewUser(ctx context.Context, User *models.User) error
 	GetUserByUserName(ctx context.Context, username, role string) (models.User, error)
 	InsertNewUserSession(ctx context.Context, session *models.UserSession) error
+	GetUserSessionToken(ctx context.Context, token string) (models.UserSession, error)
 }
 
 type IUserService interface {
 	RegisterUser(ctx context.Context, request *models.User, role string) (*models.User, error)
 	Login(ctx context.Context, request models.LoginRequest, role string) (models.LoginReponse, error)
+	GetProfile(ctx context.Context, username string) (models.User, error)
 }
 
 type IUserHandler interface {
@@ -23,4 +25,5 @@ type IUserHandler interface {
 	RegisterAdminHandler(e echo.Context) error
 	Login(e echo.Context) error
 	LoginAdmin(e echo.Context) error
+	GetProfile(e echo.Context) error
 }

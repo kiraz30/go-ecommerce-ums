@@ -23,6 +23,7 @@ func ServeHTTP() {
 	userV1.POST("/register/admin", dependency.UserAPI.RegisterAdminHandler)
 	userV1.POST("/login", dependency.UserAPI.Login)
 	userV1.POST("/login/admin", dependency.UserAPI.LoginAdmin)
+	userV1.GET("/profile", dependency.UserAPI.GetProfile, dependency.MiddlewareValidateAuth)
 
 	e.Start(":" + helpers.GetEnv("PORT", "9000"))
 }
@@ -45,6 +46,7 @@ func dependencyInject() Dependency {
 		UserService: userService,
 	}
 	return Dependency{
-		UserAPI: userAPI,
+		UserAPI:        userAPI,
+		UserRepository: userRepository,
 	}
 }
