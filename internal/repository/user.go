@@ -60,3 +60,22 @@ func (r *UserRepository) GetUserSessionToken(ctx context.Context, token string) 
 
 	return dataUserSession, nil
 }
+
+func (r *UserRepository) GetUserRefreshToken(ctx context.Context, refreshToken string) (models.UserSession, error) {
+	var (
+		session models.UserSession
+		err     error
+	)
+	err = r.DB.Where("refresh_token =?", refreshToken).Last(&session).Error
+	if err != nil {
+		return session, err
+	}
+	if session.ID == 0 {
+		return session, errors.New("user session not found")
+	}
+	return session, nil
+}
+
+func (r *UserRepository) UpdateRefreshToken(ctx context.Context, token, refreshToken string) error {
+	return r.DB.Exec("Update user_session SET token = ? where refresh_token = ?", token, refreshToken).Error
+}
