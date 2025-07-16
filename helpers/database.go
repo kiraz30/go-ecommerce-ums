@@ -12,7 +12,7 @@ import (
 
 var DB *gorm.DB
 
-func SetupMySQL() {
+func SetupDB() {
 	var err error
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		GetEnv("DB_HOST", "127.0.0.1"),

@@ -14,7 +14,7 @@ func main() {
 	helpers.SetupLogger()
 
 	//load DB
-	helpers.SetupMySQL()
+	helpers.SetupDB()
 
 	//Load Redis
 	// helpers.SetupRedis()
