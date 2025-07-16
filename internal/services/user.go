@@ -89,7 +89,6 @@ func (s *UserService) GetProfile(ctx context.Context, username string) (models.U
 		return response, errors.Wrap(err, "failed to get user by username")
 	}
 	response.Password = ""
-	response.Role = ""
 	return response, nil
 }
 
